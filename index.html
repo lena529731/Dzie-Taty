@@ -8,80 +8,222 @@
 <style>
 body{
     margin:0;
+    background:rgb(97, 2, 2);
     font-family: Arial, sans-serif;
     overflow:hidden;
     color:white;
 }
 
-/* ===== TŁO ===== */
-#bg{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-size:cover;
-    background-position:center;
-    transition: background-image 1s ease-in-out;
-    filter: blur(2px) brightness(0.6);
-    transform: scale(1.05);
+/* ===== KOPERTA ===== */
+#envelope{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:220px;
+    height:140px;
+    background:rgb(225, 166, 176);
+    border-radius:12px;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    box-shadow:0 0 25px rgba(255,105,180,0.6);
 }
 
-/* ===== PRZYCISK ===== */
-#toggleText{
-    position:fixed;
-    top:15px;
-    right:15px;
-    z-index:10;
+/* ===== LIST ===== */
+#letter{
+    display:none;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0.9);
+    width:92%;
+    max-width:900px;
+    height:85vh;
+    background:rgba(235, 231, 231, 0.603);
+    border-radius:20px;
+    padding:15px;
+    box-sizing:border-box;
+    backdrop-filter: blur(10px);
+    box-shadow:0 0 30px rgba(255,255,255,0.08);
+}
+
+/* animacje */
+.show{
+    display:block;
+    animation: pop 0.4s ease forwards;
+}
+
+.hide{
+    animation: close 0.4s ease forwards;
+}
+
+@keyframes pop{
+    from{transform:translate(-50%,-50%) scale(0.6); opacity:0;}
+    to{transform:translate(-50%,-50%) scale(0.9); opacity:1;}
+}
+
+@keyframes close{
+    from{transform:translate(-50%,-50%) scale(0.9); opacity:1;}
+    to{transform:translate(-50%,-50%) scale(0.4); opacity:0;}
+}
+
+/* ===== LAYOUT ===== */
+.container{
+    display:flex;
+    height:100%;
+    gap:10px;
+}
+
+.left{
+    flex:1;
+    background:rgba(0,0,0,0.35);
+    padding:15px;
+    border-radius:15px;
+    overflow:auto;
+}
+
+.right{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ===== ZDJĘCIE ===== */
+.image-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+img{
+    width:100%;
+    max-height:55vh;
+    border-radius:15px;
+    object-fit:contain;
+    transition: transform 0.2s ease;
+    touch-action:none;
+}
+
+/* ===== PRZYCISKI ===== */
+.controls{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+
+button{
     padding:10px 14px;
     border:none;
     border-radius:10px;
     background:#ff4da6;
     color:white;
-    cursor:pointer;
+    font-size:16px;
 }
 
-/* ===== TEKST ===== */
-#textBox{
+/* ===== ZAMKNIJ ===== */
+.closeBtn{
     position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:85%;
-    max-width:600px;
-    padding:20px;
-    border-radius:20px;
-    background:rgba(0,0,0,0.45);
-    backdrop-filter: blur(10px);
-    text-align:center;
-    line-height:1.6;
+    top:10px;
+    right:10px;
+    background:#ff2e63;
 }
 
-/* ukrywanie */
-.hidden{
-    display:none;
+/* ===== MOBILE FIX ===== */
+@media(max-width:700px){
+
+    body{
+        overflow:auto;
+    }
+
+    #letter{
+        width:95%;
+        height:92vh;
+        padding:10px;
+    }
+
+    .container{
+        flex-direction:column;
+        height:100%;
+    }
+
+    .left{
+        flex:0 0 auto;
+        max-height:45%;
+        overflow:auto;
+        font-size:16px;
+        line-height:1.6;
+        padding:12px;
+        background:rgba(0,0,0,0.45);
+    }
+
+    .left h2{
+        font-size:18px;
+        margin-bottom:8px;
+    }
+
+    .right{
+        flex:1;
+        justify-content:flex-start;
+        margin-top:10px;
+    }
+
+    img{
+        max-height:38vh;
+    }
+
+    .controls{
+        margin-top:8px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- TŁO -->
-<div id="bg"></div>
+<!-- KOPERTA -->
+<div id="envelope" onclick="openLetter()">
+    💌
+</div>
 
-<!-- PRZYCISK -->
-<button id="toggleText" onclick="toggleText()">Ukryj tekst ✖</button>
+<!-- LIST -->
+<div id="letter">
+    <button class="closeBtn" onclick="closeLetter()">✖</button>
 
-<!-- TEKST -->
-<div id="textBox">
-    <h2>💙 Dla najlepszego Taty</h2>
-    <p>
-        Wszystkiego najlepszego Tato! 💙<br><br>
+    <div class="container">
 
-        Dziękuję Ci za wszystko co dla mnie robisz, za wsparcie, cierpliwość i każdy wspólny dzień.<br><br>
+        <div class="left">
+            <h2>💙 Dla najlepszego Taty</h2>
+            <p>
+                Wszystkiego najlepszego Tato! Mimo, że czasami się nie dogadujemy,
+                to naprawdę cieszę się, że cię mam.<br><br>
 
-        Jestem Ci bardzo wdzięczna i kocham Cię 💗
-    </p>
+                Dziękuję za wszystko co dla mnie robisz, za każdego Blika 🤣,
+                za każdy wspólny czas i za to, że zawsze we mnie wierzysz.<br><br>
+
+                Kocham cię 💗
+            </p>
+        </div>
+
+        <div class="right">
+
+            <div class="image-wrapper">
+                <img id="photo" src="1.jpg">
+            </div>
+
+            <div class="controls">
+                <button onclick="prev()">⬅</button>
+                <button onclick="next()">➡</button>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 <script>
@@ -92,38 +234,105 @@ let images = [
 ];
 
 let index = 0;
-let bg = document.getElementById("bg");
 
-/* ustaw tło */
-function setBg(){
-    bg.style.backgroundImage = `url(${images[index]})`;
+function openLetter(){
+    document.getElementById("envelope").style.display="none";
+
+    let letter = document.getElementById("letter");
+    letter.classList.remove("hide");
+    letter.classList.add("show");
+    letter.style.display="block";
 }
 
-setBg();
+function closeLetter(){
+    let letter = document.getElementById("letter");
 
-/* slideshow */
-setInterval(()=>{
+    letter.classList.remove("show");
+    letter.classList.add("hide");
+
+    setTimeout(()=>{
+        letter.style.display="none";
+        document.getElementById("envelope").style.display="flex";
+    }, 400);
+}
+
+function next(){
     index = (index + 1) % images.length;
-    setBg();
-}, 3000);
-
-/* toggle tekst */
-let textVisible = true;
-
-function toggleText(){
-    let box = document.getElementById("textBox");
-    let btn = document.getElementById("toggleText");
-
-    textVisible = !textVisible;
-
-    if(textVisible){
-        box.classList.remove("hidden");
-        btn.innerText = "Ukryj tekst ✖";
-    } else {
-        box.classList.add("hidden");
-        btn.innerText = "Pokaż tekst 💬";
-    }
+    resetZoom();
+    document.getElementById("photo").src = images[index];
 }
+
+function prev(){
+    index = (index - 1 + images.length) % images.length;
+    resetZoom();
+    document.getElementById("photo").src = images[index];
+}
+
+/* swipe */
+let startX = 0;
+
+document.getElementById("photo").addEventListener("touchstart", e=>{
+    startX = e.changedTouches[0].screenX;
+});
+
+document.getElementById("photo").addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].screenX;
+    if(endX < startX - 50) next();
+    if(endX > startX + 50) prev();
+});
+
+/* zoom */
+let scale = 1;
+let img = document.getElementById("photo");
+
+function updateZoom(){
+    img.style.transform = `scale(${scale})`;
+}
+
+function resetZoom(){
+    scale = 1;
+    updateZoom();
+}
+
+/* pinch */
+let startDist = 0;
+
+img.addEventListener("touchstart", e=>{
+    if(e.touches.length === 2){
+        startDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+    }
+});
+
+img.addEventListener("touchmove", e=>{
+    if(e.touches.length === 2){
+        let dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+
+        scale = dist / startDist;
+
+        if(scale < 1) scale = 1;
+        if(scale > 3) scale = 3;
+
+        updateZoom();
+    }
+});
+
+/* double tap */
+let lastTap = 0;
+
+img.addEventListener("touchend", e=>{
+    let now = new Date().getTime();
+    if(now - lastTap < 300){
+        scale = (scale === 1) ? 2 : 1;
+        updateZoom();
+    }
+    lastTap = now;
+});
 
 </script>
 
